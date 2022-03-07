@@ -36,7 +36,9 @@ public class Anchor {
 
         for(int i = 'a'; i <= 'z'; i++) {
             tile.setData((char)i);
-            vCheck[i-'a'] = board.validWord(row, col, Board.Direction.DOWN, root);
+            boolean condition = board.getTile(row-1,col) == null || board.getTile(row-1,col).isEmpty();
+            condition &= board.getTile(row+1,col) == null || board.getTile(row+1,col).isEmpty();
+            vCheck[i-'a'] = board.validWord(row, col, Board.Direction.DOWN, root) || condition;
             tile.clearTile();
         }
     }
@@ -46,7 +48,9 @@ public class Anchor {
 
         for(int i = 'a'; i <= 'z'; i++) {
             tile.setData((char)i);
-            hCheck[i-'a'] = board.validWord(row, col, Board.Direction.ACROSS, root);
+            boolean condition = board.getTile(row,col-1) == null || board.getTile(row,col-1).isEmpty();
+            condition &= board.getTile(row,col+1) == null || board.getTile(row,col+1).isEmpty();
+            hCheck[i-'a'] = board.validWord(row, col, Board.Direction.ACROSS, root) || condition;
             tile.clearTile();
         }
     }

@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class ComputerPlayer {
@@ -46,6 +45,7 @@ public class ComputerPlayer {
             }
         }
         for(Anchor anchor : anchors.values()) anchor.updateCrossChecks(root);
+
     }
 
     private void leftPart(String partial, TrieNode node, int lim, BoardTile anchor) {
@@ -143,6 +143,7 @@ public class ComputerPlayer {
             }
         }
     }
+
     public void makeMove() {
         getAnchors();
         for(Anchor anchor : anchors.values()) {
@@ -226,8 +227,6 @@ public class ComputerPlayer {
             else row++;
         }
         if(hand.isEmpty()) score += 50;
-        System.out.println(partial + " at " + currRow + "," + currCol + " with score " + score + " " + direction);
-        System.out.println(valid);
         if(score > bestScore && valid) {
             bestRow = currRow;
             bestCol = currCol;

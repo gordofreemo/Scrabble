@@ -36,12 +36,5 @@ public class BoardSolver {
         }
 
         player.makeMove();
-        board.placeTile(3,10,'t');
-        board.placeTile(4,10,'i');
-        board.placeTile(5,10,'n');
-        board.placeTile(6,10,'p');
-        board.placeTile(7,10,'o');
-        board.placeTile(8,10,'t');
-        TrieNode node = root;
     }
 }
