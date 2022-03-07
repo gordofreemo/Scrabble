@@ -60,6 +60,14 @@ public class ComputerPlayer {
                     currCol++;
                     hand.add(c);
                 }
+                if(hand.contains('*')) {
+                    hand.remove((Character)'*');
+                    currCol--;
+                    TrieNode newNode = node.getChild(c);
+                    leftPart(partial + Character.toUpperCase(c), newNode,lim - 1, anchor);
+                    currCol++;
+                    hand.add('*');
+                }
             }
         }
     }
@@ -82,6 +90,15 @@ public class ComputerPlayer {
                     String newString = partial + c;
                     extendRight(newString, newNode, nextSquare);
                     hand.add(c);
+                }
+                if(hand.contains('*') && condition) {
+                    hand.remove((Character)'*');
+                    TrieNode newNode = node.getChild(c);
+                    int col = square.getColumn() + 1;
+                    BoardTile nextSquare = board.getTile(currRow, col);
+                    String newString = partial + Character.toUpperCase(c);
+                    extendRight(newString, newNode, nextSquare);
+                    hand.add('*');
                 }
             }
         }
@@ -108,6 +125,14 @@ public class ComputerPlayer {
                     currRow++;
                     hand.add(c);
                 }
+                if(hand.contains('*')) {
+                    hand.remove((Character)'*');
+                    currRow--;
+                    TrieNode newNode = node.getChild(c);
+                    topPart(partial + Character.toUpperCase(c), newNode, lim-1, anchor);
+                    currRow++;
+                    hand.add('*');
+                }
             }
         }
     }
@@ -130,6 +155,15 @@ public class ComputerPlayer {
                     String newString = partial + c;
                     extendDown(newString, newNode, nextSquare);
                     hand.add(c);
+                }
+                if(hand.contains('*') && condition) {
+                    hand.remove((Character) '*');
+                    TrieNode newNode = node.getChild(c);
+                    int row = square.getRow() + 1;
+                    BoardTile nextSquare = board.getTile(row,currCol);
+                    String newString = partial + Character.toUpperCase(c);
+                    extendDown(newString, newNode, nextSquare);
+                    hand.add('*');
                 }
             }
         }
