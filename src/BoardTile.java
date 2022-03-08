@@ -154,12 +154,16 @@ public class BoardTile {
      * @return - String representation of the tile
      */
     public String toString() {
-        return "(" + row + "," + column + ")" +
-                "[" + getData()
-                +"," + getScore()
-                +"," + getCharMultiplier()
-                +"," + getWordMultiplier() + "]";
+        if(!isEmpty()) return " " + getData();
+        String string = "";
 
+        if(getWordMultiplier() == 1) string += ".";
+        else string += getWordMultiplier();
+
+        if(getCharMultiplier() == 1) string += ".";
+        else string += getCharMultiplier();
+
+        return string;
     }
 
 }
