@@ -1,3 +1,10 @@
+/**
+ * Andrew Geyko
+ * This class reads in a dictionary file and makes a Trie
+ * from it, constructor throws an exception if the file was not found
+ * and the only open method, makeTree, returns the root of the trie.
+ */
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
@@ -13,6 +20,10 @@ public class TrieFileParser {
         root = new TrieNode('\0');
     }
 
+    /**
+     * Makes a complete Trie from the given dictionary
+     * @return - root of the trie
+     */
     public TrieNode makeTree() {
         Scanner sc = new Scanner(in);
         while(sc.hasNextLine()) {
@@ -27,6 +38,13 @@ public class TrieFileParser {
         return root;
     }
 
+    /**
+     * Helper method to put a new node into the trie
+     * @param root - node to add character to
+     * @param data - character to add to node
+     * @return - returns the node that was either added or if it was already
+     * a child of the root, that node itself
+     */
     private TrieNode addNode(TrieNode root, Character data) {
         TrieNode node = root.getChild(data);
         if(node == null) {
