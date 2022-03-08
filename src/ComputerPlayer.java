@@ -14,6 +14,7 @@ public class ComputerPlayer {
     private HashMap<BoardTile, Anchor> anchors;
     private TrieNode root;
     private ArrayList<Character> hand;
+    private MoveInfo moveInfo;
 
     private String bestWord;
     private int bestScore;
@@ -29,6 +30,11 @@ public class ComputerPlayer {
         anchors = new HashMap<>();
         hand = new ArrayList<>();
         bestScore = 0;
+        moveInfo = new MoveInfo();
+    }
+
+    public MoveInfo getMoveInfo() {
+        return moveInfo;
     }
 
     public void addToHand(Character c) {
@@ -239,6 +245,7 @@ public class ComputerPlayer {
      * extends right.
      */
     public void makeMove() {
+        moveInfo.setHand(hand);
         //Recompute anchor squares and reset score
         getAnchors();
         bestWord = "";
@@ -318,7 +325,12 @@ public class ComputerPlayer {
                 extendDown(partial, node, anchor.getTile());
             }
         }
-        System.out.println("Best word " + bestWord + " at " + bestDirection + "(" + bestRow + "," + bestCol + ")" + " with score " + bestScore);
+
+        moveInfo.setCol(bestCol);
+        moveInfo.setRow(bestRow);
+        moveInfo.setWord(bestWord);
+        moveInfo.setDirection(bestDirection);
+        moveInfo.setScore(bestScore);
     }
 
     /**
