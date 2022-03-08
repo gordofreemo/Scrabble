@@ -1,15 +1,12 @@
-
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class BoardSolver {
     public static void main(String[] args) throws FileNotFoundException {
-        File readFile = new File("testing.txt");
         TrieFileParser parser = new TrieFileParser(args[0]);
         TrieNode root = parser.makeTree();
 
-        Scanner sc = new Scanner(readFile);
+        Scanner sc = new Scanner(System.in);
 
         while(sc.hasNext()) {
             int size = sc.nextInt();
@@ -50,7 +47,8 @@ public class BoardSolver {
             System.out.print("Tray: " + hand);
             System.out.println();
             System.out.println("Solution " + info.getWord() + " has " + info.getScore() + " points");
-            System.out.println();
+            System.out.println("Solution Board:");
+            System.out.println(board);
         }
     }
 }

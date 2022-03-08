@@ -331,6 +331,7 @@ public class ComputerPlayer {
         moveInfo.setWord(bestWord);
         moveInfo.setDirection(bestDirection);
         moveInfo.setScore(bestScore);
+        placeMove();
     }
 
     /**
@@ -371,7 +372,19 @@ public class ComputerPlayer {
             bestDirection = direction;
             bestScore = score;
         }
+    }
 
-
+    /**
+     * Put the best found move onto the board and lock the tiles
+     */
+    private void placeMove() {
+        int row = bestRow;
+        int col = bestCol;
+        for(int i = 0; i < bestWord.length(); i++) {
+            board.placeTile(row, col, bestWord.charAt(i));
+            board.getTile(row,col).lockTile();
+            if(bestDirection == Board.Direction.ACROSS) col++;
+            else row++;
+        }
     }
 }
