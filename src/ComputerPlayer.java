@@ -245,21 +245,25 @@ public class ComputerPlayer {
         int row = currRow;
         int col = currCol;
         boolean valid = false;
+        //Place word onto the board
         for(int i = 0; i < partial.length(); i++) {
             board.placeTile(row, col, partial.charAt(i));
             if(anchors.containsKey(board.getTile(row,col))) valid = true;
             if(direction == Board.Direction.ACROSS) col++;
             else row++;
         }
+        //Double check that word is valid, score word
         if(!board.validWord(currRow,currCol,direction,root)) return;
         int score = board.scoreWord(currRow, currCol, direction);
         row = currRow;
         col = currCol;
+        //take word off the board
         for(int i = 0; i < partial.length(); i++) {
             board.getTile(row,col).clearTile();
             if(direction == Board.Direction.ACROSS) col++;
             else row++;
         }
+        //Update best move stats if necessary
         if(hand.isEmpty()) score += 50;
         if(score > bestScore && valid) {
             bestRow = currRow;

@@ -1,16 +1,23 @@
 /**
- * Class representing the game board
+ * Andrew Geyko
+ * Class representing the game board, main functionality is placing/removing
+ * things from the board, getting a tile from the board.
+ * You can also count the score of a given word based on the rules of scrabble
+ * and see if a word on the board is in a given dictionary.
  */
 
 public class Board {
+    /**
+     * Representing a direction in which a word can be placed onto the board,
+     * pretty self-explanatory. Used in loops to decide which direction to go.
+     */
     public enum Direction {
         ACROSS,
         DOWN
     }
 
-    BoardTile[][] board;
+    private BoardTile[][] board; //All operations w/ these are zero-indexed
     private int size;
-    private TrieNode trieRoot;
 
     public Board(int size) {
         board = new BoardTile[size][size];
@@ -22,20 +29,47 @@ public class Board {
         }
     }
 
+    /**
+     * Put the given data onto the given row/column onto the board, if
+     * out of bounds just do nothing
+     * @param row - what row to place on
+     * @param col - what column to place on
+     * @param data - what character to put on the tile
+     */
     public void placeTile(int row, int col, char data) {
         if(row >= size || col >= size || row < 0 || col < 0) return;
         board[row][col].setData(data);
     }
 
+    /**
+     * Get a tile from the board at a specified index
+     * @param row - what row to get the tile from
+     * @param col - what column to get the tile from
+     * @return - Tile at given index, or null if out of bounds
+     */
     public BoardTile getTile(int row, int col) {
         if (row >= size || col >= size || row < 0 || col < 0) return null;
         return board[row][col];
     }
 
+    /**
+     * @return - size of the board
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * Checks to see if a word on the board is part of the dictionary. It
+     * doesn't matter if you give it the start of a word or the middle of
+     * a word, the computation works either way.
+     * @param row - row where some part of the word is
+     * @param col - column where some part of the word is
+     * @param direction - direction in which the word is going
+     * @param root - root of the Trie representing the lexicon
+     * @return - true if the word on the board is in the dictionary, false
+     * otherwise
+     */
     public boolean validWord(int row, int col, Direction direction, TrieNode root) {
         //go to start of word
         if(direction == Direction.ACROSS) while(col > 0 && !getTile(row, col-1).isEmpty()) col--;
@@ -53,6 +87,18 @@ public class Board {
         return currNode != null && currNode.isTerminalNode();
     }
 
+    /**
+     * Given the root of a word and the direction the word is in, scores
+     * the word. You don't need to do any additional bookkeeping because
+     * BoardTiles are classified as either "new" or "filled", which
+     * allows us to apply multipliers to only tiles that are considered "new",
+     * and only recur into connected words when we have a "new" tile.
+     * @param row - row where start of word is
+     * @param col - column where start of word is
+     * @param direction - direction in which the word goes
+     * @return - returns the total score of the word, with multipliers and
+     * connected words counted (doesn't count the bonus when hand empty)
+     */
     public int scoreWord(int row, int col, Direction direction) {
         int total = 0;
         int connectedTotal = 0;
@@ -89,6 +135,16 @@ public class Board {
         return total*wordMultiplier + connectedTotal;
     }
 
+    /**
+     * Used for counting addition words formed when placing something
+     * down onto the board. Basically the same as the original method, just
+     * doesn't recur into connected words.
+     * @param row - row where part of the connected word is
+     * @param col - column where part of the connected word is
+     * @param direction - direction in which to go
+     * @return - returns total score of the connected word, multipliers
+     * and all
+     */
     private int nonRecurScore(int row, int col, Direction direction) {
         int total = 0;
         int wordMultiplier = 1;
@@ -109,6 +165,9 @@ public class Board {
         return total * wordMultiplier;
     }
 
+    /**
+     * @return - string representation of the board
+     */
     public String toString() {
         StringBuilder string = new StringBuilder();
         for(int i = 0; i < size; i++) {

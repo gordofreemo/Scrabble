@@ -1,4 +1,5 @@
 /**
+ * Andrew Geyko
  * This class represents the concept of an Anchor Square, which is an empty
  * tile on the board that is connected to some other tile on the board.
  * This should only really be used in the ComputerPlayer class, where the
