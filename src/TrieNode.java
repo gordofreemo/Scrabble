@@ -1,5 +1,10 @@
 /**
- * Class responsible for the data structure
+ * Andrew Geyko
+ * This class is responsible for the data structure representing the lexicon,
+ * the "trie". The trie is a collection of nodes, where each node has a letter
+ * associated with it. If a node is a "terminal node", then the path
+ * from the root to that node represents a complete word in the dictionary.
+ * Navigate it like a regular multi-edge tree.
  */
 
 import java.util.Collection;
