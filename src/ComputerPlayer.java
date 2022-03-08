@@ -1,9 +1,17 @@
+/**
+ * Andrew Geyko
+ * Class representing the AI computer in the scrabble game. Each move, it
+ * computes and makes the highest scoring move that is possible onto the board.
+ * The algorithm it uses is the same as described in the "world's fastest
+ * scrabble program" paper.
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ComputerPlayer {
     private Board board;
-    public HashMap<BoardTile, Anchor> anchors;
+    private HashMap<BoardTile, Anchor> anchors;
     private TrieNode root;
     private ArrayList<Character> hand;
 
@@ -27,6 +35,10 @@ public class ComputerPlayer {
         hand.add(c);
     }
 
+    /**
+     * Gets all the anchors for a given board, and computes all the
+     * crosschecks for them.
+     */
     public void getAnchors() {
         anchors.clear();
 
@@ -48,6 +60,15 @@ public class ComputerPlayer {
 
     }
 
+    /**
+     * Computes all possible "left parts" before a given anchor. For each of these
+     * left parts that we generate, attempt to extendRight to find complete
+     * words.
+     * @param partial - partial word that has been generated so far
+     * @param node - node in he trie where we currently are
+     * @param lim - how much space we have to form the left part
+     * @param anchor - anchor square that we are forming the left part of
+     */
     private void leftPart(String partial, TrieNode node, int lim, BoardTile anchor) {
         extendRight(partial, node, anchor);
         if(lim > 0) {
@@ -72,6 +93,15 @@ public class ComputerPlayer {
         }
     }
 
+    /**
+     * Find all valid permutations of a given left part in the across direction,
+     * calls checkWord for every valid permutation found. This is the same
+     * backtracking algorithm that was described in the "worlds fastest scrabble
+     * program" paper.
+     * @param partial - word that has been built so far
+     * @param node - node in the trie where we currently are
+     * @param square - square on the board where we currently are
+     */
     private void extendRight(String partial, TrieNode node, BoardTile square) {
         if(square == null) {
             if(node.isTerminalNode()) checkWord(partial, Board.Direction.ACROSS);
@@ -113,6 +143,15 @@ public class ComputerPlayer {
         }
     }
 
+    /**
+     * Computes all possible "top parts" before a given anchor. For each
+     * of these top parts that we generate, attempt to extendDown to find
+     * complete words.
+     * @param partial - partial word that has been generated so far
+     * @param node - node in the trie where we currently are
+     * @param lim - how much space we have to form the top part
+     * @param anchor - anchor square that we are forming the top part of
+     */
     private void topPart(String partial, TrieNode node, int lim, BoardTile anchor) {
         extendDown(partial, node, anchor);
         if(lim > 0) {
@@ -137,16 +176,29 @@ public class ComputerPlayer {
         }
     }
 
+    /**
+     * Find all valid permutations of a given top part in the downwards direction,
+     * calls checkWord for every valid permutation found. This is the same
+     * backtracking algorithm that was described in the "worlds fastest scrabble
+     * program" paper, just the extendDown version instead of extendRight.
+     * @param partial - word that has been built so far
+     * @param node - node in the trie where we currently are
+     * @param square - square on the board where we currently are
+     */
     private void extendDown(String partial, TrieNode node, BoardTile square) {
+        //if off the board, stop extending
         if(square == null) {
             if(node.isTerminalNode()) checkWord(partial, Board.Direction.DOWN);
             return;
         }
+        //if square is empty, start placing valid characters and doing
+        //recursive backtrack
         if(square.isEmpty()) {
             if(node.isTerminalNode()) checkWord(partial, Board.Direction.DOWN);
             for(Character c : node.getChildrenData()) {
                 boolean condition = !anchors.containsKey(square)
                                     || anchors.get(square).hasHCheck(c);
+                //If we have in our hand a valid character, backtrack
                 if(hand.contains(c) && condition) {
                     hand.remove(c);
                     TrieNode newNode = node.getChild(c);
@@ -156,6 +208,7 @@ public class ComputerPlayer {
                     extendDown(newString, newNode, nextSquare);
                     hand.add(c);
                 }
+                //If we have a blank in our hand, backtrack for each valid character
                 if(hand.contains('*') && condition) {
                     hand.remove((Character) '*');
                     TrieNode newNode = node.getChild(c);
@@ -167,6 +220,7 @@ public class ComputerPlayer {
                 }
             }
         }
+        //If the current square already has something, keep going
         else {
             Character c = square.getData();
             if(node.contains(c)) {
@@ -178,16 +232,34 @@ public class ComputerPlayer {
         }
     }
 
+    /**
+     * Play the best scoring move onto the board.
+     * Basically goes through every anchor, computing the "before" part somehow
+     * (either through seeing what came before or calling beforePart) and then
+     * extends right.
+     */
     public void makeMove() {
+        //Recompute anchor squares and reset score
         getAnchors();
+        bestWord = "";
+        bestScore = 0;
+        bestCol = 0;
+        bestRow = 0;
+        bestDirection = null;
+
+        //For every anchor we computed, try to form a word
         for(Anchor anchor : anchors.values()) {
             currCol = anchor.getCol();
             currRow = anchor.getRow();
 
+            //making across moves
             BoardTile prev = board.getTile(currRow, currCol-1);
+            //If the node is at the edge of board, just extendRight
             if(prev == null) {
                 extendRight("", root, anchor.getTile());
             }
+            //if the node before is empty, see how much empty space we have
+            //to form the left part
             else if(prev.isEmpty()) {
                 int lim = 0;
                 while (prev != null && !anchors.containsKey(prev)) {
@@ -196,6 +268,8 @@ public class ComputerPlayer {
                 }
                 leftPart("", root, lim-1, anchor.getTile());
             }
+            //If there is something before the anchor, compute that "left part"
+            //and then extendRight
             else {
                 String partial = "";
                 while(prev != null && !prev.isEmpty()) {
@@ -212,10 +286,14 @@ public class ComputerPlayer {
 
             currCol = anchor.getCol();
             currRow = anchor.getRow();
+            //making down moves
             prev = board.getTile(currRow-1, currCol);
+            //If the node is at the edge of board, just extendDown
             if(prev == null) {
                 extendDown("", root, anchor.getTile());
             }
+            //if the node before is empty, see how much empty space we have
+            //to form the top part
             else if(prev.isEmpty()) {
                 int lim = 0;
                 while(prev != null && !anchors.containsKey(prev)) {
@@ -224,6 +302,8 @@ public class ComputerPlayer {
                 }
                 topPart("", root, lim-1, anchor.getTile());
             }
+            //If there is something before the anchor, compute the "top part"
+            //and then extendDown
             else {
                 String partial = "";
                 while(prev != null && !prev.isEmpty()) {
@@ -241,6 +321,13 @@ public class ComputerPlayer {
         System.out.println("Best word " + bestWord + " at " + bestDirection + "(" + bestRow + "," + bestCol + ")" + " with score " + bestScore);
     }
 
+    /**
+     * Checks a move that the extendRight algorithm computed to make sure
+     * the move is valid, then updates the information about where the best
+     * move was made if this move is better than all the others.
+     * @param partial - string representing word that has been made
+     * @param direction - direction in which word was placed
+     */
     private void checkWord(String partial, Board.Direction direction) {
         int row = currRow;
         int col = currCol;
