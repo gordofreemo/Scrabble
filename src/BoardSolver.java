@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -6,7 +7,7 @@ public class BoardSolver {
         TrieFileParser parser = new TrieFileParser(args[0]);
         TrieNode root = parser.makeTree();
 
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(new File("testing.txt"));
 
         while(sc.hasNext()) {
             int size = sc.nextInt();

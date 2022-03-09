@@ -172,7 +172,8 @@ public class Board {
         StringBuilder string = new StringBuilder();
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
-                string.append(board[i][j] + " ");
+                string.append(board[i][j]);
+                if(j != size-1) string.append(" ");
             }
             string.append('\n');
         }
