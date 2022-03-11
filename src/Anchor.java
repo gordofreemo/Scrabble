@@ -29,8 +29,9 @@ public class Anchor {
      * Given a board, make a hashmap relating what tiles the anchors are on.
      * Useful to be static since it makes sense that the Anchor class should
      * be able to give us all the anchors we need.
-     * @param board
-     * @return
+     * @param board - the board to find the anchors of
+     * @return - hashmap where the keys are tiles on the board and
+     * values are anchor objects
      */
     static public HashMap<BoardTile, Anchor> getAnchors(Board board) {
         HashMap<BoardTile, Anchor> anchors = new HashMap<>();

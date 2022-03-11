@@ -12,7 +12,6 @@ public class MoveInfo {
     private int row;
     private int col;
     private Board.Direction direction;
-    private ArrayList<Character> hand;
 
     public int getScore() {
         return score;
@@ -54,11 +53,12 @@ public class MoveInfo {
         this.direction = direction;
     }
 
-    public ArrayList<Character> getHand() {
-        return hand;
-    }
 
-    public void setHand(ArrayList<Character> hand) {
-        this.hand = hand;
+    public void clear() {
+        score = 0;
+        word = null;
+        row = 0;
+        col = 0;
+        direction = null;
     }
 }

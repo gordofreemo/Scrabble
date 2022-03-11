@@ -172,6 +172,29 @@ public class Board {
     }
 
     /**
+     * Given any part of a word on the board and a direction, returns a
+     * string representation of the word on the board
+     * @param row - what row a part of the word is on
+     * @param col - what column a part of the word is on
+     * @param direction - direction in which word is placed
+     * @return - string representing the word on the board
+     */
+    public String getWord(int row, int col, Direction direction) {
+        String word = "";
+        //move to start of word
+        if(direction == Direction.ACROSS) {
+            while(col > 0 && !getTile(row, col-1).isEmpty()) col--;
+        }
+        else while(row > 0 && !getTile(row-1,col).isEmpty()) row--;
+
+        while(row < size && col < size && !getTile(row,col).isEmpty()) {
+            word += getTile(row,col).getData();
+        }
+
+        return word;
+    }
+
+    /**
      * @return - string representation of the board
      */
     public String toString() {

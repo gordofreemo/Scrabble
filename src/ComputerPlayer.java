@@ -220,7 +220,6 @@ public class ComputerPlayer {
      * extends right.
      */
     public void makeMove() {
-        moveInfo.setHand(hand);
         //Recompute anchor squares and reset score
         anchors = Anchor.getAnchors(board);
         for(Anchor anchor : anchors.values()) anchor.updateCrossChecks(root);
