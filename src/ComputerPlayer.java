@@ -42,31 +42,6 @@ public class ComputerPlayer {
     }
 
     /**
-     * Gets all the anchors for a given board, and computes all the
-     * crosschecks for them.
-     */
-    public void getAnchors() {
-        anchors.clear();
-
-        for(int i = 0; i < board.getSize(); i++) {
-            for(int j = 0; j < board.getSize(); j++) {
-                if(board.getTile(i,j).isEmpty()) continue;;
-                BoardTile[] tiles = new BoardTile[4];
-                tiles[0] = board.getTile(i+1, j);
-                tiles[1] = board.getTile(i-1,j);
-                tiles[2] = board.getTile(i,j+1);
-                tiles[3] = board.getTile(i,j-1);
-                for(BoardTile tile : tiles ){
-                    if(tile == null || !tile.isEmpty()) continue;
-                    anchors.put(tile, new Anchor(tile, board));
-                }
-            }
-        }
-        for(Anchor anchor : anchors.values()) anchor.updateCrossChecks(root);
-
-    }
-
-    /**
      * Computes all possible "left parts" before a given anchor. For each of these
      * left parts that we generate, attempt to extendRight to find complete
      * words.
@@ -247,7 +222,8 @@ public class ComputerPlayer {
     public void makeMove() {
         moveInfo.setHand(hand);
         //Recompute anchor squares and reset score
-        getAnchors();
+        anchors = Anchor.getAnchors(board);
+        for(Anchor anchor : anchors.values()) anchor.updateCrossChecks(root);
         bestWord = "";
         bestScore = 0;
         bestCol = 0;

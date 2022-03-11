@@ -45,11 +45,11 @@ public class HumanPlayer {
 
         //Get left and topmost placed tile
         int row = placed.stream()
-                .map(x -> x.getRow())
-                .reduce(Integer.MAX_VALUE,(acc,n)->Integer.min(acc,n));
+                .map(BoardTile::getRow)
+                .reduce(Integer.MAX_VALUE,Integer::min);
         int col = placed.stream()
-                .map(x -> x.getColumn())
-                .reduce(Integer.MAX_VALUE,(acc,n)->Integer.min(acc,n));
+                .map(BoardTile::getColumn)
+                .reduce(Integer.MAX_VALUE,Integer::min);
 
         //Are all rows/columns consistent?
         boolean rowMatch = placed.stream()

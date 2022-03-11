@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * Andrew Geyko
  * This class represents the concept of an Anchor Square, which is an empty
@@ -23,6 +25,31 @@ public class Anchor {
         hCheck = new boolean[26];
     }
 
+    /**
+     * Given a board, make a hashmap relating what tiles the anchors are on.
+     * Useful to be static since it makes sense that the Anchor class should
+     * be able to give us all the anchors we need.
+     * @param board
+     * @return
+     */
+    static public HashMap<BoardTile, Anchor> getAnchors(Board board) {
+        HashMap<BoardTile, Anchor> anchors = new HashMap<>();
+        for(int i = 0; i < board.getSize(); i++) {
+            for(int j = 0; j < board.getSize(); j++) {
+                if(board.getTile(i,j).isEmpty()) continue;;
+                BoardTile[] tiles = new BoardTile[4];
+                tiles[0] = board.getTile(i+1, j);
+                tiles[1] = board.getTile(i-1,j);
+                tiles[2] = board.getTile(i,j+1);
+                tiles[3] = board.getTile(i,j-1);
+                for(BoardTile tile : tiles ){
+                    if(tile == null || !tile.isEmpty()) continue;
+                    anchors.put(tile, new Anchor(tile, board));
+                }
+            }
+        }
+        return anchors;
+    }
 
     /**
      * @param c - character to check in across check
