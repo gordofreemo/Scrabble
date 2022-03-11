@@ -88,13 +88,13 @@ public class Board {
     }
 
     /**
-     * Given the root of a word and the direction the word is in, scores
+     * Given part of a word and the direction the word is in, scores
      * the word. You don't need to do any additional bookkeeping because
      * BoardTiles are classified as either "new" or "filled", which
      * allows us to apply multipliers to only tiles that are considered "new",
      * and only recur into connected words when we have a "new" tile.
-     * @param row - row where start of word is
-     * @param col - column where start of word is
+     * @param row - row where part of word is
+     * @param col - column where part of word is
      * @param direction - direction in which the word goes
      * @return - returns the total score of the word, with multipliers and
      * connected words counted (doesn't count the bonus when hand empty)
@@ -103,6 +103,12 @@ public class Board {
         int total = 0;
         int connectedTotal = 0;
         int wordMultiplier = 1;
+
+        //move to start of word
+        if(direction == Direction.ACROSS) {
+            while(col > 0 && !getTile(row, col-1).isEmpty()) col--;
+        }
+        else while(row > 0 && !getTile(row-1,col).isEmpty()) row--;
 
         while(row < size && col < size && !getTile(row,col).isEmpty()) {
             total += getTile(row,col).getScore();
