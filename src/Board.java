@@ -205,6 +205,19 @@ public class Board {
     }
 
     /**
+     * Make the current board have the multipliers of a standard scrabble board.
+     * Board has to be 15x15, otherwise this won't work, but that shouldn't be
+     * an issue.
+     */
+    public void makeScrabbleBoard() {
+        for(int i = 0; i < 15; i++) {
+            board[i][i].setWordMultiplier(2);
+            board[i][14-i].setWordMultiplier(2);
+        }
+
+    }
+
+    /**
      * @return - string representation of the board
      */
     public String toString() {

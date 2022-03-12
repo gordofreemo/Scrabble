@@ -3,6 +3,16 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class BoardSolver {
+    private Scanner sc;
+
+    public BoardSolver() {
+        sc = new Scanner(System.in);
+    }
+
+    public BoardSolver(String filename) {
+
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         TrieFileParser parser = new TrieFileParser(args[0]);
         TrieNode root = parser.makeTree();

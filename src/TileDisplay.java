@@ -12,6 +12,7 @@ public class TileDisplay extends Canvas {
 
     public void placeMove(Character move) {
         tile.setData(move);
+        repaint();
     }
 
     public void repaint() {
@@ -29,6 +30,7 @@ public class TileDisplay extends Canvas {
 
         gc.setFill(back);
         gc.fillRect(0,0,width,height);
+        gc.strokeRect(0,0,width,height);
 
         if(tile.isEmpty()) return;
 
@@ -36,4 +38,5 @@ public class TileDisplay extends Canvas {
         Integer score = tile.getScore()/tile.getCharMultiplier();
         gc.strokeText(score.toString(), width-width/5,height-height/5);
     }
+
 }
