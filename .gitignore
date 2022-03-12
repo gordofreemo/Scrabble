@@ -1,4 +1,5 @@
 .idea
 *.iml
 out
-*.txt
+sowpods.txt
+testing.txt
