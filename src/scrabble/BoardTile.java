@@ -1,3 +1,5 @@
+package scrabble;
+
 /**
  * Andrew Geyko
  * Class representing a tile on the board, mostly just sort of holds

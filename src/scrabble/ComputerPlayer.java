@@ -1,4 +1,4 @@
-/**
+package scrabble; /**
  * Andrew Geyko
  * Class representing the AI computer in the scrabble game. Each move, it
  * computes and makes the highest scoring move that is possible onto the board.

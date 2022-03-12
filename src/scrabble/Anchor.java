@@ -1,10 +1,12 @@
+package scrabble;
+
 import java.util.HashMap;
 
 /**
  * Andrew Geyko
- * This class represents the concept of an Anchor Square, which is an empty
+ * This class represents the concept of an scrabble.Anchor Square, which is an empty
  * tile on the board that is connected to some other tile on the board.
- * This should only really be used in the ComputerPlayer class, where the
+ * This should only really be used in the scrabble.ComputerPlayer class, where the
  * AI gets anchor tiles on the board and attempts to make words around the
  * anchor tile.
  */
@@ -27,7 +29,7 @@ public class Anchor {
 
     /**
      * Given a board, make a hashmap relating what tiles the anchors are on.
-     * Useful to be static since it makes sense that the Anchor class should
+     * Useful to be static since it makes sense that the scrabble.Anchor class should
      * be able to give us all the anchors we need.
      * @param board - the board to find the anchors of
      * @return - hashmap where the keys are tiles on the board and

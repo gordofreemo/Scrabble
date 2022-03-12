@@ -1,4 +1,4 @@
-/**
+package scrabble; /**
  * Andrew Geyko
  * This class reads in a dictionary file and makes a Trie
  * from it, constructor throws an exception if the file was not found

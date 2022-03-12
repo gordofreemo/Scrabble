@@ -1,3 +1,5 @@
+package scrabble;
+
 /**
  * Andrew Geyko
  * Class representing the game board, main functionality is placing/removing
@@ -206,7 +208,7 @@ public class Board {
 
     /**
      * Make the current board have the multipliers of a standard scrabble board.
-     * Board has to be 15x15, otherwise this won't work, but that shouldn't be
+     * scrabble.Board has to be 15x15, otherwise this won't work, but that shouldn't be
      * an issue.
      */
     public void makeScrabbleBoard() {

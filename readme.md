@@ -3,8 +3,8 @@ Need to begin making the board functional so that I can begin implement AI
 algorithm <br>
 <br>
 Need to make the "dictionary" class, which will be able to check whether 
-a word is valid or just add that functionality to the TrieNode class, will 
-remove the need to have both the AI and the Board to have functionality that 
+a word is valid or just add that functionality to the scrabble.TrieNode class, will 
+remove the need to have both the AI and the scrabble.Board to have functionality that 
 checks if a word is valid.
 
 In the tiles - null represents out of bounds or "tile does not exist" 
@@ -25,7 +25,7 @@ loops through the alphabet seeing which words are placeable.
 
 @TODO 
 
-- Make ComputerPlayer capable of computing cross checks 
+- Make scrabble.ComputerPlayer capable of computing cross checks 
 - Move anchor class to its own file 
 - In either the board or the computer player class, add some functionality to be
 to get the "leftmost" coordinate of a connected word and the "topmost" coordinate

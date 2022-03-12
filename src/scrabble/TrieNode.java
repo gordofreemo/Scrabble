@@ -1,4 +1,4 @@
-/**
+package scrabble; /**
  * Andrew Geyko
  * This class is responsible for the data structure representing the lexicon,
  * the "trie". The trie is a collection of nodes, where each node has a letter

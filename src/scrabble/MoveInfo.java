@@ -1,10 +1,8 @@
-/**
+package scrabble; /**
  * Andrew Geyko
  * This class represents bundled up information about a move made. Used in
- * the solver program to get information from the ComputerPlayer
+ * the solver program to get information from the scrabble.ComputerPlayer
  */
-
-import java.util.ArrayList;
 
 public class MoveInfo {
     private int score;

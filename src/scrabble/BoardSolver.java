@@ -1,3 +1,5 @@
+package scrabble;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -51,14 +53,14 @@ public class BoardSolver {
             }
 
 
-            System.out.println("Input Board:");
+            System.out.println("Input scrabble.Board:");
             System.out.print(board);
             player.makeMove();
             MoveInfo info = player.getMoveInfo();
             System.out.print("Tray: " + hand);
             System.out.println();
             System.out.println("Solution " + info.getWord() + " has " + info.getScore() + " points");
-            System.out.println("Solution Board:");
+            System.out.println("Solution scrabble.Board:");
             System.out.println(board);
         }
     }

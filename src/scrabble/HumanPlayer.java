@@ -1,4 +1,4 @@
-/**
+package scrabble; /**
  * Andrew Geyko
  * This class is for the Human Player in the scrabble game. It has functionality
  * to place things onto the board and to validate a move made.
