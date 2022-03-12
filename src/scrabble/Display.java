@@ -20,7 +20,8 @@ public class Display extends Application {
     @Override
     public void start(Stage primaryStage) {
         size = 15;
-        board = new Board(size);
+        BoardSolver scrabbleGetter = new BoardSolver("scrabble_board.txt");
+        board = scrabbleGetter.makeBoard();
         tiles = new TileDisplay[size][size];
         boardDisplay = new GridPane();
         Scene scene = new Scene(boardDisplay, 1000, 800);

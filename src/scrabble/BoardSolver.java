@@ -7,14 +7,26 @@ public class BoardSolver {
     private Scanner sc;
     private TrieNode root;
 
+    /**
+     * Used for reading from standard input
+     */
     public BoardSolver() {
         sc = new Scanner(System.in);
     }
 
+    /**
+     * Used for loading a resource and generating a board
+     * @param filename - filename of resource to grab
+     */
     public BoardSolver(String filename) {
         sc = new Scanner(ClassLoader.getSystemResourceAsStream(filename));
     }
 
+    /**
+     * Parses a board from the scanner input and returns a Board object
+     * representing what was read in
+     * @return - board object that file represents
+     */
     public Board makeBoard() {
         int size = sc.nextInt();
         Board board = new Board(size);
@@ -40,6 +52,11 @@ public class BoardSolver {
         return board;
     }
 
+    /**
+     * Output information about the solution that the computer player
+     * found for the given board
+     * @param board - board to solve
+     */
     private void outputSolution(Board board) {
         ComputerPlayer player = new ComputerPlayer(board, root);
         sc.nextLine();
@@ -58,6 +75,9 @@ public class BoardSolver {
         System.out.println(board);
     }
 
+    /**
+     * Read and "solve" an entire input file specified in the format
+     */
     private void parse() {
         while(sc.hasNext()) {
             Board board = makeBoard();
@@ -65,6 +85,9 @@ public class BoardSolver {
         }
     }
 
+    /**
+     * @param root - root of the trie representing lexicon
+     */
     private void setRoot(TrieNode root) {
         this.root = root;
     }
@@ -72,7 +95,7 @@ public class BoardSolver {
     public static void main(String[] args) throws FileNotFoundException {
         TrieFileParser parser = new TrieFileParser(args[0]);
         TrieNode root = parser.makeTree();
-        BoardSolver solver = new BoardSolver("testing.txt");
+        BoardSolver solver = new BoardSolver();
         solver.setRoot(root);
         solver.parse();
     }
