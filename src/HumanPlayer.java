@@ -1,9 +1,18 @@
+/**
+ * Andrew Geyko
+ * This class is for the Human Player in the scrabble game. It has functionality
+ * to place things onto the board and to validate a move made.
+ */
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
 public class HumanPlayer {
-
+    /**
+     * Represents whether a move is valid, if it is not then describes how
+     * the move is incorrect.
+     */
     public enum MoveStatus {
         NOT_ATTACHED,
         NOT_WORD,
@@ -27,6 +36,12 @@ public class HumanPlayer {
         totalScore = 0;
     }
 
+    /**
+     * Places the given character onto a tile onto the board and
+     * updates bookkeeping structures
+     * @param tile - what tile to place on
+     * @param move - what character to place on tile
+     */
     public void placeTile(BoardTile tile, Character move) {
         if(placed.isEmpty()) anchors = Anchor.getAnchors(board);
         if(!tile.isEmpty()) return;
@@ -35,6 +50,10 @@ public class HumanPlayer {
         placed.add(tile);
     }
 
+    /**
+     * Take everything off the board that has been placed this turn
+     * and update bookkeeping structure
+     */
     public void resetMove() {
         for(BoardTile tile : placed) {
             Character toAdd = tile.getData();
@@ -45,6 +64,12 @@ public class HumanPlayer {
         placed.clear();
     }
 
+    /**
+     * Looks at what has been placed this turn and determines if the move made
+     * is valid
+     * @return - enum showing the various kinds of misplays that may have
+     * occurred
+     */
     public MoveStatus validateMove() {
         Board.Direction direction;
         //Get left and topmost placed tile
