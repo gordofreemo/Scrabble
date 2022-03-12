@@ -72,8 +72,12 @@ public class Board {
      */
     public boolean validWord(int row, int col, Direction direction, TrieNode root) {
         //go to start of word
-        if(direction == Direction.ACROSS) while(col > 0 && !getTile(row, col-1).isEmpty()) col--;
-        else while(row > 0 && !getTile(row-1, col).isEmpty()) row--;
+        if(direction == Direction.ACROSS) {
+            while(col > 0 && !getTile(row, col-1).isEmpty()) col--;
+        }
+        else {
+            while(row > 0 && !getTile(row-1, col).isEmpty()) row--;
+        }
 
         TrieNode currNode = root;
         while(row < size && col < size && !getTile(row,col).isEmpty()) {
@@ -108,7 +112,9 @@ public class Board {
         if(direction == Direction.ACROSS) {
             while(col > 0 && !getTile(row, col-1).isEmpty()) col--;
         }
-        else while(row > 0 && !getTile(row-1,col).isEmpty()) row--;
+        else {
+            while(row > 0 && !getTile(row-1,col).isEmpty()) row--;
+        }
 
         while(row < size && col < size && !getTile(row,col).isEmpty()) {
             total += getTile(row,col).getScore();
@@ -158,7 +164,9 @@ public class Board {
         if(direction == Direction.ACROSS) {
             while(col > 0 && !getTile(row, col-1).isEmpty()) col--;
         }
-        else while(row > 0 && !getTile(row-1,col).isEmpty()) row--;
+        else {
+            while(row > 0 && !getTile(row-1,col).isEmpty()) row--;
+        }
 
         //Move across word and count score
         while(row < size && col < size && !getTile(row,col).isEmpty()) {
@@ -185,7 +193,9 @@ public class Board {
         if(direction == Direction.ACROSS) {
             while(col > 0 && !getTile(row, col-1).isEmpty()) col--;
         }
-        else while(row > 0 && !getTile(row-1,col).isEmpty()) row--;
+        else {
+            while(row > 0 && !getTile(row-1,col).isEmpty()) row--;
+        }
 
         while(row < size && col < size && !getTile(row,col).isEmpty()) {
             word += getTile(row,col).getData();
