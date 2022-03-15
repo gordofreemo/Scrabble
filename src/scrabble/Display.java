@@ -38,8 +38,8 @@ public class Display extends Application {
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
                 tiles[i][j] = new TileDisplay(board.getTile(i,j));
-                tiles[i][j].heightProperty().bind(boardDisplay.heightProperty().divide(15));
-                tiles[i][j].widthProperty().bind(boardDisplay.widthProperty().divide(15));
+                tiles[i][j].heightProperty().bind(boardDisplay.heightProperty().divide(16));
+                tiles[i][j].widthProperty().bind(boardDisplay.widthProperty().divide(16));
                 boardDisplay.add(tiles[i][j],j,i);
                 tiles[i][j].repaint();
             }

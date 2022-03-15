@@ -365,7 +365,11 @@ public class ComputerPlayer {
         for(int i = 0; i < bestWord.length(); i++) {
             board.placeTile(row, col, bestWord.charAt(i));
             board.getTile(row,col).lockTile();
-            hand.remove((Character)bestWord.charAt(i));
+            if(Character.isUpperCase((Character)bestWord.charAt(i))) {
+                hand.remove((Character)'*');
+            }
+            else hand.remove((Character)bestWord.charAt(i));
+
             if(bestDirection == Board.Direction.ACROSS) col++;
             else row++;
         }
