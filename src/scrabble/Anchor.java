@@ -37,9 +37,11 @@ public class Anchor {
      */
     static public HashMap<BoardTile, Anchor> getAnchors(Board board) {
         HashMap<BoardTile, Anchor> anchors = new HashMap<>();
+        boolean boardEmpty = true;
         for(int i = 0; i < board.getSize(); i++) {
             for(int j = 0; j < board.getSize(); j++) {
-                if(board.getTile(i,j).isEmpty()) continue;;
+                if(board.getTile(i,j).isEmpty()) continue;
+                boardEmpty = false;
                 BoardTile[] tiles = new BoardTile[4];
                 tiles[0] = board.getTile(i+1, j);
                 tiles[1] = board.getTile(i-1,j);
@@ -50,6 +52,11 @@ public class Anchor {
                     anchors.put(tile, new Anchor(tile, board));
                 }
             }
+        }
+        if(boardEmpty) {
+            int size = board.getSize();
+            BoardTile tile = board.getTile(size/2,size/2);
+            anchors.put(tile, new Anchor(tile, board));
         }
         return anchors;
     }

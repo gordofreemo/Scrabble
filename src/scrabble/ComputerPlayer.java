@@ -42,6 +42,10 @@ public class ComputerPlayer {
         hand.add(c);
     }
 
+    public int getHandSize() {
+        return hand.size();
+    }
+
     /**
      * Computes all possible "left parts" before a given anchor. For each of these
      * left parts that we generate, attempt to extendRight to find complete

@@ -41,6 +41,10 @@ public class HumanPlayer {
         hand.add(c);
     }
 
+    public int getHandSize() {
+        return hand.size();
+    }
+
     /**
      * Places the given character onto a tile onto the board and
      * updates bookkeeping structures
