@@ -2,4 +2,5 @@
 *.iml
 out
 sowpods.txt
-src/resources/testing.txt
+testing.txt
+META-INF

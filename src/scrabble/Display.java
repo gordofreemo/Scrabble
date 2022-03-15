@@ -5,11 +5,12 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
+
 public class Display extends Application {
     private TileDisplay[][] tiles;
     private GridPane boardDisplay;
     private Board board;
-    private int size;
     private HumanPlayer human;
     private ComputerPlayer ai;
 
@@ -18,13 +19,16 @@ public class Display extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        size = 15;
+    public void start(Stage primaryStage) throws FileNotFoundException {
         BoardSolver scrabbleGetter = new BoardSolver("scrabble_board.txt");
+        TrieFileParser parser = new TrieFileParser(ClassLoader.getSystemResourceAsStream("twl06.txt"));
+        TrieNode root = parser.makeTree();
         board = scrabbleGetter.makeBoard();
+        int size = board.getSize();
         tiles = new TileDisplay[size][size];
         boardDisplay = new GridPane();
         Scene scene = new Scene(boardDisplay, 1000, 800);
+
 
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
@@ -41,4 +45,5 @@ public class Display extends Application {
         primaryStage.setResizable(true);
         primaryStage.setTitle("Scrabble");
     }
+
 }

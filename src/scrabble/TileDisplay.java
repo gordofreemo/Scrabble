@@ -3,6 +3,7 @@ package scrabble;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class TileDisplay extends Canvas {
     private BoardTile tile;
@@ -36,9 +37,11 @@ public class TileDisplay extends Canvas {
 
         if(tile.isEmpty()) return;
 
-        gc.strokeText(tile.getData().toString(), width/2, height/2);
+        gc.setFont(new Font((height+width)/5));
+        gc.strokeText(tile.getData().toString(), width/2-width/10, height/2);
         Integer score = tile.getScore()/tile.getCharMultiplier();
-        gc.strokeText(score.toString(), width-width/5,height-height/5);
+        gc.setFont(new Font((height+width)/10));
+        gc.strokeText(score.toString(), width-width/5,height-height/10);
     }
 
 }

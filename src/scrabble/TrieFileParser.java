@@ -7,25 +7,31 @@ package scrabble; /**
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.util.Scanner;
 
 public class TrieFileParser {
     private TrieNode root;
     private String fileName;
-    private FileReader in;
+    private Scanner sc;
 
     public TrieFileParser(String fileName) throws FileNotFoundException {
         this.fileName = fileName;
-        in  = new FileReader(fileName);
+        FileReader file = new FileReader(fileName);
+        sc  = new Scanner(file);
         root = new TrieNode('\0');
     }
 
+    public TrieFileParser(InputStream stream) {
+        this.fileName = "";
+        sc = new Scanner(stream);
+        root = new TrieNode('\0');
+    }
     /**
      * Makes a complete Trie from the given dictionary
      * @return - root of the trie
      */
     public TrieNode makeTree() {
-        Scanner sc = new Scanner(in);
         while(sc.hasNextLine()) {
             TrieNode currNode = root;
             String line = sc.nextLine();
