@@ -13,6 +13,7 @@ public class Display extends Application {
     private Board board;
     private HumanPlayer human;
     private ComputerPlayer ai;
+    private TilePile pile;
 
     public static void main(String[] args) {
         launch(args);

@@ -10,6 +10,7 @@ public class MoveInfo {
     private int row;
     private int col;
     private Board.Direction direction;
+    private boolean moveSuccess;
 
     public int getScore() {
         return score;
@@ -51,6 +52,13 @@ public class MoveInfo {
         this.direction = direction;
     }
 
+    public boolean getMoveSuccess() {
+        return moveSuccess;
+    }
+
+    public void setMoveSuccess(boolean bool) {
+        moveSuccess = bool;
+    }
 
     public void clear() {
         score = 0;
@@ -58,5 +66,6 @@ public class MoveInfo {
         row = 0;
         col = 0;
         direction = null;
+        moveSuccess = false;
     }
 }

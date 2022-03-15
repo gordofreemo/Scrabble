@@ -1,4 +1,5 @@
-package scrabble; /**
+package scrabble;
+/**
  * Andrew Geyko
  * Class representing the AI computer in the scrabble game. Each move, it
  * computes and makes the highest scoring move that is possible onto the board.
@@ -228,6 +229,7 @@ public class ComputerPlayer {
         bestCol = 0;
         bestRow = 0;
         bestDirection = null;
+        moveInfo.clear();
 
         //For every anchor we computed, try to form a word
         for(Anchor anchor : anchors.values()) {
@@ -306,6 +308,7 @@ public class ComputerPlayer {
         moveInfo.setWord(bestWord);
         moveInfo.setDirection(bestDirection);
         moveInfo.setScore(bestScore);
+        if(bestWord != "") moveInfo.setMoveSuccess(true);
         placeMove();
     }
 

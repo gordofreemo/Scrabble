@@ -24,16 +24,21 @@ public class HumanPlayer {
     private HashSet<BoardTile> placed;
     private HashMap<BoardTile, Anchor> anchors;
     private Board board;
-    private int totalScore;
     private MoveInfo moveInfo;
-    private TrieNode root;
 
     public HumanPlayer(Board board) {
         hand = new ArrayList<>();
         placed = new HashSet<>();
         this.board = board;
         moveInfo = new MoveInfo();
-        totalScore = 0;
+    }
+
+    public MoveInfo getMoveInfo() {
+        return moveInfo;
+    }
+
+    public void addToHand(Character c) {
+        hand.add(c);
     }
 
     /**
@@ -43,7 +48,10 @@ public class HumanPlayer {
      * @param move - what character to place on tile
      */
     public void placeTile(BoardTile tile, Character move) {
-        if(placed.isEmpty()) anchors = Anchor.getAnchors(board);
+        if(placed.isEmpty()) {
+            anchors = Anchor.getAnchors(board);
+            moveInfo.clear();
+        }
         if(!tile.isEmpty()) return;
         tile.setData(move);
         hand.remove(move);
@@ -62,6 +70,7 @@ public class HumanPlayer {
             tile.clearTile();
         }
         placed.clear();
+        moveInfo.clear();
     }
 
     /**
@@ -70,7 +79,7 @@ public class HumanPlayer {
      * @return - enum showing the various kinds of misplays that may have
      * occurred
      */
-    public MoveStatus validateMove() {
+    public MoveStatus validateMove(TrieNode root) {
         Board.Direction direction;
         //Get left and topmost placed tile
         int row = placed.stream()
@@ -101,8 +110,14 @@ public class HumanPlayer {
         moveInfo.setDirection(direction);
         moveInfo.setRow(row);
         moveInfo.setCol(col);
+        moveInfo.setMoveSuccess(true);
 
         return MoveStatus.MOVE_SUCCESS;
     }
 
+    public void placeMove() {
+        for(BoardTile tile : placed) tile.lockTile();
+        placed.clear();
+        anchors.clear();
+    }
 }
