@@ -1,12 +1,11 @@
-package scrabble; /**
+package scrabble;
+/**
  * Andrew Geyko
  * This class is for the Human Player in the scrabble game. It has functionality
  * to place things onto the board and to validate a move made.
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 public class HumanPlayer {
     /**
@@ -45,6 +44,14 @@ public class HumanPlayer {
         return hand.size();
     }
 
+    public List<Character> getHand() {
+        return hand;
+    }
+
+    public Set<BoardTile> getPlaced() {
+        return placed;
+    }
+    
     /**
      * Places the given character onto a tile onto the board and
      * updates bookkeeping structures
@@ -85,6 +92,7 @@ public class HumanPlayer {
      */
     public MoveStatus validateMove(TrieNode root) {
         Board.Direction direction;
+        if(placed.isEmpty()) return MoveStatus.NOT_WORD;
         //Get left and topmost placed tile
         int row = placed.stream()
                 .map(BoardTile::getRow)
@@ -98,11 +106,20 @@ public class HumanPlayer {
         boolean colMatch = placed.stream()
                         .allMatch(x -> x.getColumn() == col);
 
-        if(rowMatch) direction = Board.Direction.DOWN;
-        else if(colMatch) direction = Board.Direction.ACROSS;
+        boolean both = rowMatch && colMatch;
+        if(rowMatch) direction = Board.Direction.ACROSS;
+        else if(colMatch) direction = Board.Direction.DOWN;
         else return MoveStatus.DIR_MISMATCH;
 
-        if(!board.validWord(row, col, direction, root)) return MoveStatus.NOT_WORD;
+        System.out.println("row " + row + " col " + col + " direction " + direction);
+        if(!both) {
+            if (!board.validWord(row, col, direction, root)) return MoveStatus.NOT_WORD;
+        }
+        else {
+            if(board.validWord(row,col, Board.Direction.ACROSS, root)) direction = Board.Direction.ACROSS;
+            else if(board.validWord(row,col, Board.Direction.DOWN, root)) direction = Board.Direction.DOWN;
+            else return MoveStatus.NOT_WORD;
+        }
 
         //is at least one tile placed at some anchor?
         boolean anchored = anchors.keySet().stream()

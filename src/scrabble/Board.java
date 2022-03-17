@@ -201,6 +201,8 @@ public class Board {
 
         while(row < size && col < size && !getTile(row,col).isEmpty()) {
             word += getTile(row,col).getData();
+            if(direction == Direction.ACROSS) col++;
+            else row++;
         }
 
         return word;

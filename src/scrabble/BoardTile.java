@@ -71,7 +71,7 @@ public class BoardTile {
      */
     public void setData(Character data) {
         if(state == State.FILLED) return;
-        if(Character.isUpperCase(data)) score = 0;
+        if(Character.isUpperCase(data) || data == '*') score = 0;
         else score = scores[data-97];
         state = State.NEW;
         this.data = data;

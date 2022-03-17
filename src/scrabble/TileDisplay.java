@@ -7,10 +7,27 @@ import javafx.scene.text.Font;
 
 public class TileDisplay extends Canvas {
     private BoardTile tile;
+    private boolean selected;
 
     public TileDisplay(BoardTile tile) {
         super();
         this.tile = tile;
+        selected = false;
+    }
+
+    public TileDisplay(Character character) {
+        super();
+        tile = new BoardTile(-1,-1);
+        placeMove(character);
+        selected = false;
+    }
+
+    public BoardTile getTile() {
+        return tile;
+    }
+
+    public void setSelected(Boolean bool) {
+        selected = bool;
     }
 
     public void placeMove(Character move) {
@@ -34,28 +51,34 @@ public class TileDisplay extends Canvas {
 
         gc.setFill(back);
         gc.fillRect(0,0,width,height);
-        gc.strokeRect(0,0,width,height);
+        if(selected) {
+            gc.setStroke(Color.RED);
+            gc.setLineWidth(5);
+            gc.strokeRect(0,0,width,height);
+        }
+        else gc.strokeRect(0,0,width,height);
 
-        gc.setFont(new Font("Arial Regular", (height+width)/7));
+        gc.setFont(new Font("Arial Regular", (height+width)/10));
         gc.setFill(Color.BLACK);
+        boolean empty = tile.isEmpty();
         if(tile.getWordMultiplier() > 1) {
-            gc.fillText(tile.getWordMultiplier()+"x", width/2-width/10, height/2);
+            if(empty) gc.fillText("WORD",width/2-width/5,height/2);
             gc.setFont(new Font("Arial Regular", (height+width)/10));
-            gc.fillText("WORD", width/2-width/4, height-height/10);
+            gc.fillText(tile.getWordMultiplier()+"x",width/2-width/10,height-height/10);
         }
         if(tile.getCharMultiplier() > 1) {
-            gc.fillText(tile.getCharMultiplier()+"x",width/2-width/10,height/2);
+            if(empty) gc.fillText("CHAR",width/2-width/5,height/2);
             gc.setFont(new Font("Arial Regular", (height+width)/10));
-            gc.fillText("CHAR",width/2-width/4,height-height/10);
+            gc.fillText(tile.getCharMultiplier()+"x",width/2-width/10,height-height/10);
         }
 
         if(tile.isEmpty()) return;
 
 
-        gc.setFont(new Font("Comic Sans",(height+width)/5));
+        gc.setFont(new Font("Arial Bold",(height+width)/5));
         gc.fillText(tile.getData().toString(), width/2-width/10, height/2);
         Integer score = tile.getScore()/tile.getCharMultiplier();
-        gc.setFont(new Font((height+width)/10));
+        gc.setFont(new Font("Arial Regular", (height+width)/10));
         gc.fillText(score.toString(), width-width/5,height-height/10);
     }
 
