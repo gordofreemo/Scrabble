@@ -2,7 +2,9 @@ package scrabble;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.io.FileNotFoundException;
@@ -34,16 +36,16 @@ public class Display extends Application {
         Button reset = new Button();
         reset.setOnMouseClicked(e -> {human.resetMove(); updateHand();});
         reset.setText("RESET");
-        reset.setPrefSize(100,50);
+        reset.setPrefSize(100,40);
         Button submit = new Button();
-        submit.setPrefSize(100,50);
+        submit.setPrefSize(100,40);
         submit.setText("SUBMIT");
         submit.setOnMouseClicked(e -> handleMove());
 
         boardDisplay.setPrefSize(900,900);
         handDisplay.setPrefSize(900,100);
         mainDisplay.add(boardDisplay,0,0,2,1);
-        mainDisplay.add(handDisplay,0,1);
+        mainDisplay.add(handDisplay,0,1, 1, 2);
         mainDisplay.add(submit,1,1);
         mainDisplay.add(reset,1,2);
 
@@ -56,7 +58,10 @@ public class Display extends Application {
                 tiles[i][j].repaint();
                 int finalI = i;
                 int finalJ = j;
-                tiles[i][j].setOnMouseClicked(e -> {handlePlace(finalI, finalJ); repaint();});
+                tiles[i][j].setOnMouseClicked(e -> {
+                    handlePlace(finalI, finalJ);
+                    repaint();
+                });
             }
         }
 
@@ -69,11 +74,26 @@ public class Display extends Application {
 
     private void handleMove() {
         HumanPlayer.MoveStatus status = human.validateMove(root);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Incorrect Move");
         switch(status) {
             case MOVE_SUCCESS -> {
                 human.placeMove();
                 makeMove();
                 updateHand();
+            }
+            case DIR_MISMATCH -> {
+                alert.setContentText("Move must be either horizontal or vertical");
+                alert.showAndWait();
+            }
+            case NOT_WORD -> {
+                alert.setContentText("Word not in dictionary!");
+                alert.showAndWait();
+            }
+            case NOT_ATTACHED -> {
+                alert.setContentText("Word must be connected to word on board" +
+                        "(or center square)");
+                alert.showAndWait();
             }
         }
         repaint();
@@ -81,8 +101,26 @@ public class Display extends Application {
 
     private void handlePlace(int row, int col) {
         if(selected == null) return;
+        Character data = selected.getTile().getData();
         BoardTile tile = board.getTile(row,col);
-        human.placeTile(tile, selected.getTile().getData());
+        if(!tile.isEmpty() || data == '\0') return;
+        if(data == '*') {
+            TextInputDialog popup = new TextInputDialog();
+            popup.setTitle("Input");
+            popup.setContentText("Choose a letter for the blank");
+            popup.showAndWait();
+            String input = popup.getResult();
+            if(input.length() != 1 || !Character.isAlphabetic(input.charAt(0))) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Input Mismatch");
+                alert.setContentText("Blank must be a single character");
+                alert.showAndWait();
+                return;
+            }
+            data = Character.toUpperCase(input.charAt(0));
+        }
+
+        human.placeTile(tile, data);
         selected.getTile().clearTile();
         selected = null;
     }
