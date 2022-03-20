@@ -1,5 +1,11 @@
 package scrabble;
 
+/**
+ * Andrew Geyko
+ * This class is responsible for the graphical interface of the scrabble game,
+ * tying together all the components into one place.
+ */
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -39,6 +45,7 @@ public class Display extends Application {
         int size = board.getSize();
         Scene scene = new Scene(mainDisplay, 1000, 1000);
 
+        //Make buttons
         Button reset = new Button();
         reset.setOnMouseClicked(e -> {human.resetMove(); updateHand();});
         reset.setText("RESET");
@@ -52,11 +59,13 @@ public class Display extends Application {
         skip.setText("SKIP MOVE");
         skip.setOnMouseClicked(e -> skipMove());
 
+        //Make labels
         aiScoreLabel.setText("AI SCORE: " + aiScore);
         playerScoreLabel.setText("PLAYER SCORE: " + playerScore);
         aiScoreLabel.setPadding(new Insets(0,0,0,30));
         playerScoreLabel.setPadding(new Insets(0,0,0,30));
 
+        //Add stuff to the GridPane
         boardDisplay.setPrefSize(900,900);
         handDisplay.setPrefSize(600,100);
         mainDisplay.add(boardDisplay,0,0,3,1);
@@ -67,6 +76,7 @@ public class Display extends Application {
         mainDisplay.add(aiScoreLabel, 2, 1);
         mainDisplay.add(playerScoreLabel, 2, 2);
 
+        //Make board tiles
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
                 tiles[i][j] = new TileDisplay(board.getTile(i,j));
@@ -90,6 +100,11 @@ public class Display extends Application {
         updateHand();
     }
 
+    /**
+     * Handles the logic for when the human player submits his move.
+     * If the move is valid, AI player makes its move, if not then
+     * an alert is popped up.
+     */
     private void handleMove() {
         HumanPlayer.MoveStatus status = human.validateMove(root);
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -119,6 +134,11 @@ public class Display extends Application {
         repaint();
     }
 
+    /**
+     * Handles the logic for placing a character from the hand onto the board
+     * @param row - row on the board where character is being placed
+     * @param col - column on the board where character is being placed
+     */
     private void handlePlace(int row, int col) {
         if(selected == null) return;
         Character data = selected.getTile().getData();
@@ -145,7 +165,9 @@ public class Display extends Application {
         selected = null;
     }
 
-
+    /**
+     * Updates graphical display
+     */
     private void repaint() {
         for(int i = 0; i < board.getSize(); i++) {
             for(int j = 0; j < board.getSize(); j++) {
@@ -161,6 +183,10 @@ public class Display extends Application {
         aiScoreLabel.setText("AI SCORE: " + aiScore);
     }
 
+    /**
+     * Handles logic for when the human player wants to "skip" their move,
+     * ending their turn and drawing new tiles from the pile.
+     */
     private void skipMove() {
         human.resetMove();
         for(Character c : human.getHand()) {
@@ -172,6 +198,9 @@ public class Display extends Application {
         updateHand();
     }
 
+    /**
+     * Updates the player's hand to have 7 tiles and repaints screen
+     */
     private void updateHand() {
         while(human.getHandSize() < 7) {
             Character newHand = pile.draw();
@@ -185,6 +214,9 @@ public class Display extends Application {
         repaint();
     }
 
+    /**
+     * Initialize all the objects that are needed to run the program
+     */
     private void initObjects() {
         BoardSolver scrabbleGetter = new BoardSolver("scrabble_board.txt");
         TrieFileParser parser = new TrieFileParser(ClassLoader.getSystemResourceAsStream("twl06.txt"));
@@ -216,6 +248,9 @@ public class Display extends Application {
         aiScore = 0;
     }
 
+    /**
+     * Logic for when the AI needs to make a move
+     */
     private void makeMove() {
         while(ai.getHandSize() < 7) ai.addToHand(pile.draw());
         ai.makeMove();
