@@ -34,14 +34,24 @@ public class ComputerPlayer {
         moveInfo = new MoveInfo();
     }
 
+    /**
+     * @return - MoveInfo object representing information about AI move
+     */
     public MoveInfo getMoveInfo() {
         return moveInfo;
     }
 
+    /**
+     * Add the given character to the player's hand
+     * @param c - Character to add to hand
+     */
     public void addToHand(Character c) {
         hand.add(c);
     }
 
+    /**
+     * @return - how many elements are in the hand
+     */
     public int getHandSize() {
         return hand.size();
     }
