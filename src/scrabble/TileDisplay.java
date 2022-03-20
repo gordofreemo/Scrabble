@@ -40,7 +40,7 @@ public class TileDisplay extends Canvas {
         double width = this.getWidth();
         GraphicsContext gc = this.getGraphicsContext2D();
         Color back;
-        gc.clearRect(0,0,width,height);
+        gc.clearRect(0,0,2*width,2*height);
 
         if(tile.getWordMultiplier() == 2) back = Color.PINK;
         else if(tile.getWordMultiplier() == 3) back = Color.RED;
@@ -52,11 +52,15 @@ public class TileDisplay extends Canvas {
         gc.setFill(back);
         gc.fillRect(0,0,width,height);
         if(selected) {
-            gc.setStroke(Color.RED);
-            gc.setLineWidth(5);
+            gc.setLineWidth(10);
+            gc.setStroke(Color.ORANGE);
             gc.strokeRect(0,0,width,height);
         }
-        else gc.strokeRect(0,0,width,height);
+        else {
+            gc.setStroke(Color.BLACK);
+            gc.setLineWidth(2);
+            gc.strokeRect(0, 0, width, height);
+        }
 
         gc.setFont(new Font("Arial Regular", (height+width)/10));
         gc.setFill(Color.BLACK);

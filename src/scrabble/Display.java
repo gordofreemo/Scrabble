@@ -153,6 +153,8 @@ public class Display extends Application {
             }
         }
         for(TileDisplay tile : hand) {
+            if(tile == selected) tile.setSelected(true);
+            else tile.setSelected(false);
             tile.repaint();
         }
         playerScoreLabel.setText("PLAYER SCORE: " + playerScore);
@@ -201,7 +203,10 @@ public class Display extends Application {
             TileDisplay display = new TileDisplay(new BoardTile(-1,-1));
             display.heightProperty().bind(handDisplay.heightProperty());
             display.widthProperty().bind(handDisplay.widthProperty().divide(7));
-            display.setOnMouseClicked(e -> selected = display);
+            display.setOnMouseClicked(e -> {
+                selected = display;
+                repaint();
+            });
             handDisplay.add(display, i, 0);
             hand.add(display);
         }
