@@ -10,6 +10,7 @@ import java.util.HashMap;
  * AI gets anchor tiles on the board and attempts to make words around the
  * anchor tile.
  */
+
 public class Anchor {
     private boolean[] vCheck; //What letters form valid down words when playing across
     private boolean[] hCheck; //What letters form valid across words when playing down
