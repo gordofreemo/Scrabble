@@ -111,7 +111,6 @@ public class HumanPlayer {
         else if(colMatch) direction = Board.Direction.DOWN;
         else return MoveStatus.DIR_MISMATCH;
 
-        System.out.println("row " + row + " col " + col + " direction " + direction);
         if(!both) {
             if (!board.validWord(row, col, direction, root)) return MoveStatus.NOT_WORD;
         }

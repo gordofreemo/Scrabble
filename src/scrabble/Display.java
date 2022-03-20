@@ -1,9 +1,12 @@
 package scrabble;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -16,11 +19,15 @@ public class Display extends Application {
     private GridPane mainDisplay;
     private GridPane boardDisplay;
     private GridPane handDisplay;
+    private Label playerScoreLabel;
+    private Label aiScoreLabel;
     private TrieNode root;
     private Board board;
     private HumanPlayer human;
     private TileDisplay selected;
     private ComputerPlayer ai;
+    private int playerScore;
+    private int aiScore;
     private TilePile pile;
 
     public static void main(String[] args) {
@@ -42,12 +49,19 @@ public class Display extends Application {
         submit.setText("SUBMIT");
         submit.setOnMouseClicked(e -> handleMove());
 
+        aiScoreLabel.setText("AI SCORE: " + aiScore);
+        playerScoreLabel.setText("PLAYER SCORE: " + playerScore);
+        aiScoreLabel.setPadding(new Insets(0,0,0,30));
+        playerScoreLabel.setPadding(new Insets(0,0,0,30));
+
         boardDisplay.setPrefSize(900,900);
-        handDisplay.setPrefSize(900,100);
-        mainDisplay.add(boardDisplay,0,0,2,1);
+        handDisplay.setPrefSize(600,100);
+        mainDisplay.add(boardDisplay,0,0,3,1);
         mainDisplay.add(handDisplay,0,1, 1, 2);
-        mainDisplay.add(submit,1,1);
-        mainDisplay.add(reset,1,2);
+        mainDisplay.add(submit,3,1);
+        mainDisplay.add(reset,3,2);
+        mainDisplay.add(aiScoreLabel, 2, 1);
+        mainDisplay.add(playerScoreLabel, 2, 2);
 
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
@@ -79,6 +93,8 @@ public class Display extends Application {
         switch(status) {
             case MOVE_SUCCESS -> {
                 human.placeMove();
+                MoveInfo moveInfo = human.getMoveInfo();
+                playerScore += moveInfo.getScore();
                 makeMove();
                 updateHand();
             }
@@ -135,10 +151,11 @@ public class Display extends Application {
         for(TileDisplay tile : hand) {
             tile.repaint();
         }
+        playerScoreLabel.setText("PLAYER SCORE: " + playerScore);
+        aiScoreLabel.setText("AI SCORE: " + aiScore);
     }
 
     private void updateHand() {
-        System.out.println(human.getHandSize());
         while(human.getHandSize() < 7) {
             Character newHand = pile.draw();
             human.addToHand(newHand);
@@ -168,19 +185,22 @@ public class Display extends Application {
         for(int i = 0; i < 7; i++) {
             TileDisplay display = new TileDisplay(new BoardTile(-1,-1));
             display.heightProperty().bind(handDisplay.heightProperty());
-            display.widthProperty().bind(handDisplay.widthProperty().divide(10));
+            display.widthProperty().bind(handDisplay.widthProperty().divide(7));
             display.setOnMouseClicked(e -> selected = display);
             handDisplay.add(display, i, 0);
             hand.add(display);
         }
+        playerScoreLabel = new Label();
+        aiScoreLabel = new Label();
+        playerScore = 0;
+        aiScore = 0;
     }
 
     private void makeMove() {
         while(ai.getHandSize() < 7) ai.addToHand(pile.draw());
         ai.makeMove();
-        System.out.println(ai.getMoveInfo().getScore());
-        for(TileDisplay[] array : tiles) {
-            for(TileDisplay tile : array) tile.repaint();
-        }
+        MoveInfo moveInfo = ai.getMoveInfo();
+        aiScore += moveInfo.getScore();
+        repaint();
     }
 }
