@@ -32,22 +32,38 @@ public class HumanPlayer {
         moveInfo = new MoveInfo();
     }
 
+    /**
+     * @return - MoveInfo object represent information about move made
+     */
     public MoveInfo getMoveInfo() {
         return moveInfo;
     }
 
+    /**
+     * Add a character c to the player's hand
+     * @param c - character to add to hand
+     */
     public void addToHand(Character c) {
         hand.add(c);
     }
 
+    /**
+     * @return - how many "tiles" are in the hand of the player
+     */
     public int getHandSize() {
         return hand.size();
     }
 
+    /**
+     * @return - returns the hand of the player
+     */
     public List<Character> getHand() {
         return hand;
     }
 
+    /**
+     * @return - set of tiles that the player has put onto the board
+     */
     public Set<BoardTile> getPlaced() {
         return placed;
     }
@@ -135,6 +151,9 @@ public class HumanPlayer {
         return MoveStatus.MOVE_SUCCESS;
     }
 
+    /**
+     * Lock the move the player made onto the board
+     */
     public void placeMove() {
         for(BoardTile tile : placed) tile.lockTile();
         placed.clear();
