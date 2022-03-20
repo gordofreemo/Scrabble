@@ -1,5 +1,14 @@
 package scrabble;
 
+/**
+ * Andrew Geyko
+ * This class is responsible for painting a GUI representation of a
+ * scrabble tile. You can place either a character or a tile onto it
+ * and it will draw the character and the score.
+ * If the tile is empty, also does the drawing for character/word
+ * multipliers.
+ */
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -22,19 +31,34 @@ public class TileDisplay extends Canvas {
         selected = false;
     }
 
+    /**
+     * @return - logical tile that the graphical tile is holding
+     */
     public BoardTile getTile() {
         return tile;
     }
 
+    /**
+     * Sets whether the tile is "selected", which just gives the tile
+     * an orange outline
+     * @param bool - true if orange outline wanted, false if not
+     */
     public void setSelected(Boolean bool) {
         selected = bool;
     }
 
+    /**
+     * Put the given character onto the logical and graphical tile
+     * @param move - character to place
+     */
     public void placeMove(Character move) {
         tile.setData(move);
         repaint();
     }
 
+    /**
+     * Redraws the tile
+     */
     public void repaint() {
         double height = this.getHeight();
         double width = this.getWidth();
@@ -42,6 +66,7 @@ public class TileDisplay extends Canvas {
         Color back;
         gc.clearRect(0,0,2*width,2*height);
 
+        //Get background color
         if(tile.getWordMultiplier() == 2) back = Color.PINK;
         else if(tile.getWordMultiplier() == 3) back = Color.RED;
         else if(tile.getCharMultiplier() == 2) back = Color.LIGHTBLUE;
@@ -51,6 +76,7 @@ public class TileDisplay extends Canvas {
 
         gc.setFill(back);
         gc.fillRect(0,0,width,height);
+        //Whether to outline or not
         if(selected) {
             gc.setLineWidth(10);
             gc.setStroke(Color.ORANGE);
@@ -62,6 +88,7 @@ public class TileDisplay extends Canvas {
             gc.strokeRect(0, 0, width, height);
         }
 
+        //Draw multipliers
         gc.setFont(new Font("Arial Regular", (height+width)/10));
         gc.setFill(Color.BLACK);
         boolean empty = tile.isEmpty();
@@ -77,8 +104,6 @@ public class TileDisplay extends Canvas {
         }
 
         if(tile.isEmpty()) return;
-
-
         gc.setFont(new Font("Arial Bold",(height+width)/5));
         gc.fillText(tile.getData().toString(), width/2-width/10, height/2);
         Integer score = tile.getScore()/tile.getCharMultiplier();
