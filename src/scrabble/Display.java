@@ -2,7 +2,6 @@ package scrabble;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -43,11 +42,15 @@ public class Display extends Application {
         Button reset = new Button();
         reset.setOnMouseClicked(e -> {human.resetMove(); updateHand();});
         reset.setText("RESET");
-        reset.setPrefSize(100,40);
+        reset.setPrefSize(70,30);
         Button submit = new Button();
-        submit.setPrefSize(100,40);
+        submit.setPrefSize(70,30);
         submit.setText("SUBMIT");
         submit.setOnMouseClicked(e -> handleMove());
+        Button skip = new Button();
+        submit.setPrefSize(70,30);
+        skip.setText("SKIP MOVE");
+        skip.setOnMouseClicked(e -> skipMove());
 
         aiScoreLabel.setText("AI SCORE: " + aiScore);
         playerScoreLabel.setText("PLAYER SCORE: " + playerScore);
@@ -57,9 +60,10 @@ public class Display extends Application {
         boardDisplay.setPrefSize(900,900);
         handDisplay.setPrefSize(600,100);
         mainDisplay.add(boardDisplay,0,0,3,1);
-        mainDisplay.add(handDisplay,0,1, 1, 2);
+        mainDisplay.add(handDisplay,0,1, 1, 3);
         mainDisplay.add(submit,3,1);
         mainDisplay.add(reset,3,2);
+        mainDisplay.add(skip, 3,3);
         mainDisplay.add(aiScoreLabel, 2, 1);
         mainDisplay.add(playerScoreLabel, 2, 2);
 
@@ -153,6 +157,17 @@ public class Display extends Application {
         }
         playerScoreLabel.setText("PLAYER SCORE: " + playerScore);
         aiScoreLabel.setText("AI SCORE: " + aiScore);
+    }
+
+    private void skipMove() {
+        human.resetMove();
+        for(Character c : human.getHand()) {
+            pile.add(c);
+        }
+        pile.shuffle();
+        human.getHand().clear();
+        makeMove();
+        updateHand();
     }
 
     private void updateHand() {

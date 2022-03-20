@@ -13,6 +13,14 @@ public class TilePile {
         pile = new ArrayList<>();
     }
 
+    public void add(Character c) {
+        pile.add(c);
+    }
+
+    public void shuffle() {
+        Collections.shuffle(pile);
+    }
+
     public void scrabblePile() {
         for(int i = 'a'; i <= 'z'; i++) {
             add(freq[i-'a'], (char)i);
