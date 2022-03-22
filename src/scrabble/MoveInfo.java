@@ -14,6 +14,9 @@ public class MoveInfo {
     private Board.Direction direction;
     private boolean moveSuccess;
 
+    public MoveInfo() {
+        word = "";
+    }
     /**
      * @return - score of last move
      */
@@ -103,7 +106,7 @@ public class MoveInfo {
      */
     public void clear() {
         score = 0;
-        word = null;
+        word = "";
         row = 0;
         col = 0;
         direction = null;

@@ -384,4 +384,10 @@ public class ComputerPlayer {
             else row++;
         }
     }
+
+    public String getHandString() {
+        String string = "";
+        for(Character c : hand)  string += c;
+        return string;
+    }
 }

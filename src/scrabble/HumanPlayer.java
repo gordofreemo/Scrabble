@@ -141,7 +141,9 @@ public class HumanPlayer {
                 .anyMatch(x -> placed.contains(x));
         if(!anchored) return MoveStatus.NOT_ATTACHED;
 
-        moveInfo.setScore(board.scoreWord(row, col, direction));
+        int score = board.scoreWord(row,col,direction);
+        if(placed.size() == 7) score += 50;
+        moveInfo.setScore(score);
         moveInfo.setWord(board.getWord(row,col,direction));
         moveInfo.setDirection(direction);
         moveInfo.setRow(row);

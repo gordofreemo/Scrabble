@@ -34,6 +34,7 @@ public class Display extends Application {
     private int playerScore;
     private int aiScore;
     private TilePile pile;
+    private boolean gameOver;
 
     public static void main(String[] args) {
         launch(args);
@@ -179,8 +180,14 @@ public class Display extends Application {
             else tile.setSelected(false);
             tile.repaint();
         }
-        playerScoreLabel.setText("PLAYER SCORE: " + playerScore);
-        aiScoreLabel.setText("AI SCORE: " + aiScore);
+        if(!gameOver) {
+            playerScoreLabel.setText("PLAYER SCORE: " + playerScore);
+            aiScoreLabel.setText("AI SCORE: " + aiScore);
+        } else {
+            aiScoreLabel.setText("GAME OVER");
+            if(playerScore > aiScore) playerScoreLabel.setText("PLAYER WON");
+            else playerScoreLabel.setText("AI WON");
+        }
     }
 
     /**
@@ -202,7 +209,7 @@ public class Display extends Application {
      * Updates the player's hand to have 7 tiles and repaints screen
      */
     private void updateHand() {
-        while(human.getHandSize() < 7) {
+        while(human.getHandSize() < 7 && !pile.isEmpty()) {
             Character newHand = pile.draw();
             human.addToHand(newHand);
         }
@@ -252,10 +259,27 @@ public class Display extends Application {
      * Logic for when the AI needs to make a move
      */
     private void makeMove() {
-        while(ai.getHandSize() < 7) ai.addToHand(pile.draw());
+        while(ai.getHandSize() < 7 && !pile.isEmpty()) ai.addToHand(pile.draw());
+        System.out.println(15);
+        System.out.println(board);
+        System.out.println(ai.getHandString());
         ai.makeMove();
         MoveInfo moveInfo = ai.getMoveInfo();
         aiScore += moveInfo.getScore();
         repaint();
+        checkGameOver();
+    }
+
+    /**
+     * Rudimentary game over checking, sets the game over flag to true
+     * if the human and the AI both did not make a play and pile empty
+     */
+    private void checkGameOver() {
+        String humanString = human.getMoveInfo().getWord();
+        String aiString = ai.getMoveInfo().getWord();
+        if(humanString.isBlank() && aiString.isBlank() && pile.isEmpty()) {
+            gameOver = true;
+        }
+
     }
 }
