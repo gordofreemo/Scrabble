@@ -186,7 +186,8 @@ public class Display extends Application {
         } else {
             aiScoreLabel.setText("GAME OVER");
             if(playerScore > aiScore) playerScoreLabel.setText("PLAYER WON");
-            else playerScoreLabel.setText("AI WON");
+            else if(playerScore < aiScore) playerScoreLabel.setText("AI WON");
+            else playerScoreLabel.setText("DRAW");
         }
     }
 
